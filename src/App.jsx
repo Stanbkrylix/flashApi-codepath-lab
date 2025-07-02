@@ -30,7 +30,15 @@ function App() {
             full_page: false,
         });
     }
-    function handleFetch() {}
+    async function handleFetch() {
+        fetch(`https://api.apiflash.com/v1/urltoimage
+?access_key=${ACCESS_KEY}
+&url=${inputs.url}
+&format=${inputs.format}
+&width=${inputs.width}
+&height=${inputs.height}
+&full_page=${inputs.full_page}`);
+    }
     function handleSubmit(e) {
         e.preventDefault();
         // if (!inputs.name) return;
