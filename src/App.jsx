@@ -12,7 +12,8 @@ const url = `https://api.apiflash.com/v1/urltoimage
 &full_page=true`;
 
 function App() {
-    const [count, setCount] = useState(0);
+    const [imageURL, setImageURL] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [inputs, setInputs] = useState({
         url: "",
         format: "",
@@ -31,18 +32,27 @@ function App() {
         });
     }
     async function handleFetch() {
-        fetch(`https://api.apiflash.com/v1/urltoimage
-?access_key=${ACCESS_KEY}
-&url=${inputs.url}
-&format=${inputs.format}
-&width=${inputs.width}
-&height=${inputs.height}
-&full_page=${inputs.full_page}`);
-    }
-    function handleSubmit(e) {
-        e.preventDefault();
-        // if (!inputs.name) return;
+        setImageURL(null);
+        setIsLoading(true);
+        const url = `https://api.apiflash.com/v1/urltoimage?access_key=${ACCESS_KEY}&url=${inputs.url}&format=${inputs.format}&width=${inputs.width}&height=${inputs.height}&full_page=${inputs.full_page}`;
 
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const imageUrl = URL.createObjectURL(blob);
+            setImageURL(imageUrl);
+        } catch (error) {
+            console.error("Fetch failed", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    function handleSubmit(e) {
+        // if (!inputs.name) return;
+        e.preventDefault();
+
+        handleFetch();
         console.log(inputs);
         resetInputs();
     }
@@ -135,6 +145,16 @@ function App() {
                     </label>
                     <button type="submit">Submit</button>
                 </form>
+                <div className="screenshot-or-is-loading">
+                    {isLoading ? <div className="spinner"></div> : ""}
+                    {imageURL && !isLoading && (
+                        <img
+                            style={{ width: "800px" }}
+                            src={imageURL}
+                            alt="screenshot result"
+                        />
+                    )}
+                </div>
             </div>
         </>
     );
