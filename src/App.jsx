@@ -18,25 +18,33 @@ function App() {
         format: "",
         width: "",
         height: "",
-        full_page: "",
+        full_page: false,
     });
 
-    function handleSubmit(e) {
-        e.preventDefault();
-        // if (!inputs.name) return;
-        console.log(inputs);
+    function resetInputs() {
         setInputs({
             url: "",
             format: "",
             width: "",
             height: "",
-            full_page: "",
+            full_page: false,
         });
+    }
+    function handleFetch() {}
+    function handleSubmit(e) {
+        e.preventDefault();
+        // if (!inputs.name) return;
+
+        console.log(inputs);
+        resetInputs();
     }
 
     function handleInputs(e) {
-        const { name, value } = e.target;
-        setInputs((prev) => ({ ...prev, [name]: value }));
+        const { name, value, type, checked } = e.target;
+        setInputs((prev) => ({
+            ...prev,
+            [name]: type === "checkbox" ? checked : value,
+        }));
     }
 
     return (
@@ -55,37 +63,68 @@ function App() {
 
                     <div className="radio-div">
                         <p>Format</p>
-                        <label htmlFor="">
-                            <input
-                                type="radio"
-                                name="format"
-                                value="jpeg"
-                                checked={inputs.format === "jpeg"}
-                                onChange={handleInputs}
-                            />
-                            jpeg
-                        </label>
-                        <label htmlFor="">
-                            <input
-                                type="radio"
-                                name="format"
-                                value="png"
-                                checked={inputs.format === "png"}
-                                onChange={handleInputs}
-                            />
-                            png
-                        </label>
-                        <label htmlFor="">
-                            <input
-                                type="radio"
-                                name="format"
-                                value="webp"
-                                checked={inputs.format === "webp"}
-                                onChange={handleInputs}
-                            />
-                            webp
-                        </label>
+                        <div className="radio-labels">
+                            <label htmlFor="">
+                                <input
+                                    type="radio"
+                                    name="format"
+                                    value="jpeg"
+                                    checked={inputs.format === "jpeg"}
+                                    onChange={handleInputs}
+                                />
+                                jpeg
+                            </label>
+                            <label htmlFor="">
+                                <input
+                                    type="radio"
+                                    name="format"
+                                    value="png"
+                                    checked={inputs.format === "png"}
+                                    onChange={handleInputs}
+                                />
+                                png
+                            </label>
+                            <label htmlFor="">
+                                <input
+                                    type="radio"
+                                    name="format"
+                                    value="webp"
+                                    checked={inputs.format === "webp"}
+                                    onChange={handleInputs}
+                                />
+                                webp
+                            </label>
+                        </div>
                     </div>
+
+                    <label htmlFor="">
+                        width{" "}
+                        <input
+                            type="number"
+                            name="width"
+                            value={inputs.width}
+                            onChange={handleInputs}
+                        />
+                    </label>
+                    <label htmlFor="">
+                        height{" "}
+                        <input
+                            type="number"
+                            name="height"
+                            value={inputs.height}
+                            onChange={handleInputs}
+                        />
+                    </label>
+                    <label htmlFor="">
+                        full_page{" "}
+                        <input
+                            type="checkbox"
+                            name="full_page"
+                            // value={inputs.full_page}
+                            checked={inputs.full_page}
+                            onChange={handleInputs}
+                        />
+                    </label>
                     <button type="submit">Submit</button>
                 </form>
             </div>

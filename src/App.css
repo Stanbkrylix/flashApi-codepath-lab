@@ -4,3 +4,17 @@
     padding: 2rem;
     text-align: center;
 }
+
+.form-div form {
+    display: flex;
+    flex-direction: column;
+    /* justify-items: center; */
+    align-items: center;
+    gap: 0.5rem;
+}
+.radio-div {
+    display: flex;
+    /* justify-items: center; */
+    align-items: center;
+    gap: 0.3rem;
+}
